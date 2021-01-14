@@ -44,14 +44,10 @@ const App = () => {
 
   const checkAnswer = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!gameOver) {
-      // usr ans
       const answer = e.currentTarget.value;
-      // check correct
       const correct = questions[number].correct_answer === answer;
 
-      // add score if correcy
       if (correct) setScore((prev) => prev + 1);
-      // sav correct
       const answerObject = {
         question: questions[number].question,
         answer,
