@@ -40,7 +40,25 @@ const App = () => {
     setLoading(false);
   };
 
-  const checkAnswer = (e: React.MouseEvent<HTMLButtonElement>) => {};
+  const checkAnswer = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!gameOver) {
+      // usr ans
+      const answer = e.currentTarget.value;
+      // check correct
+      const correct = questions[number].correct_answer === answer;
+
+      // add score if correcy
+      if (correct) setScore((prev) => prev + 1);
+      // sav correct
+      const answerObject = {
+        question: questions[number].question,
+        answer,
+        correct,
+        correctAnswer: questions[number].correct_answer,
+      };
+      setUserAnswers((prev) => [...prev, answerObject])
+    }
+  };
 
   const nextQuestion = () => {};
 
@@ -52,25 +70,27 @@ const App = () => {
           Start
         </button>
       ) : null}
-      {!gameOver ? <p className='score'>Score: </p> :null}
+      {!gameOver ? <p className='score'>Score: </p> : null}
 
       {loading && <p>Loading question...</p>}
       {!loading && !gameOver && (
-      <QuestionCard
-        questionNr={number +1}
-        totalQuestions={TOTAL_QUESTIONS}
-        question={questions[number].question}
-        answers={questions[number].answers}
-        userAnswer={userAnswers ? userAnswers[number] : undefined}
-        callback={checkAnswer}
-      />
+        <QuestionCard
+          questionNr={number + 1}
+          totalQuestions={TOTAL_QUESTIONS}
+          question={questions[number].question}
+          answers={questions[number].answers}
+          userAnswer={userAnswers ? userAnswers[number] : undefined}
+          callback={checkAnswer}
+        />
       )}
-      {!gameOver && !loading && userAnswers.length === number + 1 && number !== TOTAL_QUESTIONS - 1 ? (
-
-      <button className='next' onClick={nextQuestion}>
-        Next
-      </button>
-      ): null}
+      {!gameOver &&
+      !loading &&
+      userAnswers.length === number + 1 &&
+      number !== TOTAL_QUESTIONS - 1 ? (
+        <button className='next' onClick={nextQuestion}>
+          Next
+        </button>
+      ) : null}
     </div>
   );
 };
